@@ -30,7 +30,7 @@ function li_insert_posts()
     global $li_posts;
 
     $args = array(
-        'posts_number' => 2
+        'posts_number' => 8
     );
     $posts_ids = $li_posts->wp_insert_post($args);
 

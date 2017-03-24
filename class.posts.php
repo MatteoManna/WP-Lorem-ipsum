@@ -23,18 +23,36 @@ if( !class_exists('LiPosts') ) {
         }
 
         /**
+         * @param string $key
+         * @return int
+         */
+        public function get_numbers_post_limit( $key = 'min' ) {
+            $array = array(
+                'min' => 5,
+                'max' => 50
+            );
+            $return = ( isset($array[$key]) && is_numeric($array[$key]) ) ? (int)$array[$key] : 0 ;
+
+            return $return;
+        }
+
+        /**
          * @param array $args
          * @return array
          */
         public function wp_insert_post( $args = array() )
         {
-            // Get Class LiThumbnails
-            global $li_thumbnails;
+            // Posts number: find "min" and "max" from dedicated function. Default "min"
+            $posts_number = (
+                isset($args['posts_number'])
+                && is_numeric($args['posts_number'])
+                && (
+                    $args['posts_number'] >= $this->get_numbers_post_limit('min')
+                    && $args['posts_number'] <= $this->get_numbers_post_limit('max')
+                )
+            ) ? (int)$args['posts_number'] : $this->get_numbers_post_limit('min') ;
 
-            // Posts number: default 5
-            $posts_number = ( isset($args['posts_number']) && is_numeric($args['posts_number']) && $args['posts_number'] > 0 ) ? (int)$args['posts_number'] : 5 ;
-
-            // Post type
+            // Post type, default post
             $post_type = ( isset($args['post_type']) && !empty($args['post_type']) ) ? sanitize_text_field($args['post_type']) : 'post' ;
 
             // Post status: Publish, Future, Draft, Pending, Private, Trash, Auto-Draft, Inherit. Default Publish
@@ -49,7 +67,7 @@ if( !class_exists('LiPosts') ) {
             // All new posts IDs, init array
             $posts_ids = array();
 
-            for ( $i = 1; $i <= $posts_number; $i++ ) {
+            for ( $i = 1; $i <= (int)$posts_number; $i++ ) {
                 $post = array(
                     'post_type' => $post_type,
                     'post_status' => $post_status,
@@ -60,7 +78,13 @@ if( !class_exists('LiPosts') ) {
                 );
                 $post_id = wp_insert_post( $post );
 
+                /**
+                 * If has post Thumbnails
+                 */
                 if ( $has_post_thumbnail == true ) {
+                    // Get Class LiThumbnails
+                    global $li_thumbnails;
+
                     $args = array(
                         'post_id' => $post_id,
                         'width' => 300,
@@ -69,6 +93,7 @@ if( !class_exists('LiPosts') ) {
                     $li_thumbnails->get_thumbnail($args);
                 }
 
+                // Update array with new post ID
                 $posts_ids[] = $post_id;
             }
 
