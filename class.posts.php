@@ -12,6 +12,7 @@ if( !class_exists('LiPosts') ) {
          * @return mixed
          */
         private function get_post_content( $key = 'post_title' ) {
+            //https://market.mashape.com/montanaflynn/lorem-text-generator
             $array = array(
                 'post_title' => 'test di prova come titolo',
                 'post_content' => 'testo di prova come fosse Lorem Ipsum',
