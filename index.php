@@ -81,7 +81,8 @@ function li_insert_posts()
     global $li_posts;
 
     $args = array(
-        'posts_number' => 5
+        'posts_number' => 5,
+        'has_post_thumbnail' => true
     );
     $posts_ids = $li_posts->insert_posts($args);
 

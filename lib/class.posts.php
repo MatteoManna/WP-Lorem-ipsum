@@ -15,7 +15,7 @@ if ( !class_exists('LiPosts') ) {
         {
             $array = array(
                 'min' => 5,
-                'max' => 50
+                'max' => 30
             );
             $return = ( isset($array[$key]) && is_numeric($array[$key]) ) ? (int)$array[$key] : 0 ;
 
@@ -23,8 +23,51 @@ if ( !class_exists('LiPosts') ) {
         }
 
         /**
+         * @param $image_src
+         * @return int
+         */
+        private function get_attachment_id_from_src( $image_src = '' )
+        {
+            global $wpdb;
+
+            $query = "
+                SELECT p.ID
+                FROM {$wpdb->posts} AS p
+                WHERE 1=1
+                    AND p.guid ='{$image_src}'
+            ";
+            $attachment_id = (int)$wpdb->get_var($query);
+
+            return $attachment_id;
+        }
+
+        /**
+         * @param int $post_id
+         * @source: https://unsplash.it/
+         */
+        private function post_attachment( $post_id = 0 )
+        {
+            // External random image URL
+            $image_url = 'https://unsplash.it/1024/768/?random&image.jpg';
+
+            // Upload Image in WordPress Media Library | image_url, post_id, description, return format
+            $image_src = media_sideload_image( $image_url, $post_id, '', 'src' );
+
+            // Set attachment on current Post
+            $attachment_id = $this->get_attachment_id_from_src($image_src);
+            set_post_thumbnail( $post_id, $attachment_id );
+
+            // Update Attachment title
+            $post = array(
+                'ID' => $attachment_id,
+                'post_title'=> li_get_rand_content('post_title')
+            );
+            wp_update_post( $post );
+        }
+
+        /**
          * @param array $args:
-         *      - @post_number: 5 <=> 50. Default 5
+         *      - @post_number: 5 <=> 30. Default 5
          *      - @post_type: Default post
          *      - @post_status: publish, future, draft, pending, private, trash, auto-draft, inherit. Default publish
          *      - @post_author: Default current user ID
@@ -59,6 +102,7 @@ if ( !class_exists('LiPosts') ) {
             $posts_ids = array();
 
             for ( $i = 1; $i <= (int)$posts_number; $i++ ) {
+                // Insert Post
                 $post = array(
                     'post_type' => $post_type,
                     'post_status' => $post_status,
@@ -69,21 +113,11 @@ if ( !class_exists('LiPosts') ) {
                 );
                 $post_id = wp_insert_post( $post );
 
-                // If has post Thumbnails
-                if ( $has_post_thumbnail == true ) {
-                    // Get Class LiThumbnails
-                    global $li_thumbnails;
-
-                    $args = array(
-                        'post_id' => $post_id,
-                        'width' => 300,
-                        'height' => 200
-                    );
-                    $li_thumbnails->get_thumbnail($args);
-                }
-
                 // Update array with new post ID
                 $posts_ids[] = $post_id;
+
+                // If has post Thumbnails
+                if ( $has_post_thumbnail == true ) $this->post_attachment( $post_id );
             }
 
             return $posts_ids;
