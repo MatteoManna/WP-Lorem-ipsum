@@ -1,5 +1,5 @@
 <?php
-if( !class_exists('LiThumbnails') ) {
+if ( !class_exists('LiThumbnails') ) {
     class LiThumbnails
     {
         public function __construct()

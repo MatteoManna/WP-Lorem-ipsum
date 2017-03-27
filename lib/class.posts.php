@@ -1,5 +1,5 @@
 <?php
-if( !class_exists('LiPosts') ) {
+if ( !class_exists('LiPosts') ) {
     class LiPosts
     {
         public function __construct()
