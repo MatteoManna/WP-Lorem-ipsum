@@ -1,5 +1,33 @@
 <?php
 /**
+ * @return mixed
+ */
+function li_get_authors()
+{
+    global $wpdb;
+
+    $query = "
+        SELECT u.ID, u.user_login
+        FROM {$wpdb->users} AS u
+        WHERE 1=1
+        ORDER BY u.user_login ASC
+    ";
+    $results = $wpdb->get_results($query, OBJECT);
+
+    return $results;
+}
+
+/**
+ * @return array
+ */
+function li_get_post_statuses()
+{
+    $array = array('publish', 'future', 'draft', 'pending', 'private', 'trash', 'auto-draft', 'inherit');
+
+    return $array;
+}
+
+/**
  * @return array
  */
 function li_get_post_types()

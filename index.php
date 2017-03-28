@@ -68,28 +68,138 @@ add_action( 'admin_menu', 'li_admin_menu' );
 
 function li_admin_page()
 {
+    global $li_posts;
+
+    $num_start = $li_posts->get_count_post_limit('min');
+    $num_end = $li_posts->get_count_post_limit('max');
+    $post_types = li_get_post_types();
+    $post_statuses = li_get_post_statuses();
+    $post_authors = li_get_authors();
     ?>
     <div class="wrap">
         <h2><?php echo __('WP Lorem ipsum', 'wp-lorem-ipsum'); ?></h2>
         <p><?php echo __('You can create fake posts to fill your database.', 'wp-lorem-ipsum'); ?></p>
+        <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" class="li-form">
+            <table width="100%" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr>
+                        <td><label for="post_number"><?php echo __('Number of posts', 'wp-lorem-ipsum'); ?></label></td>
+                        <td>
+                            <select name="post_number" id="post_number" required="required">
+                                <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
+                                <?php
+                                while( $num_start <= $num_end ) {
+                                    ?>
+                                    <option value="<?php echo $num_start; ?>"><?php echo $num_start; ?></option>
+                                    <?php
+                                    $num_start = $num_start + 5;
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="post_type"><?php echo __('Post type', 'wp-lorem-ipsum'); ?></label></td>
+                        <td>
+                            <select name="post_type" id="post_type" required="required">
+                                <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
+                                <?php
+                                if( count($post_types) ) {
+                                    foreach( $post_types as $post_type ) {
+                                        ?>
+                                        <option value="<?php echo $post_type; ?>"><?php echo $post_type; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="post_status"><?php echo __('Post status', 'wp-lorem-ipsum'); ?></label></td>
+                        <td>
+                            <select name="post_status" id="post_status" required="required">
+                                <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
+                                <?php
+                                if( count($post_statuses) ) {
+                                    foreach( $post_statuses as $post_status ) {
+                                        ?>
+                                        <option value="<?php echo $post_status; ?>"><?php echo $post_status; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="post_author"><?php echo __('Post author', 'wp-lorem-ipsum'); ?></label></td>
+                        <td>
+                            <select name="post_author" id="post_author" required="required">
+                                <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
+                                <?php
+                                if( count($post_authors) ) {
+                                    foreach( $post_authors as $post_author ) {
+                                        ?>
+                                        <option value="<?php echo (int)$post_author->ID; ?>"><?php echo $post_author->user_login; ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="has_post_thumbnail"><?php echo __('Post thumbnail', 'wp-lorem-ipsum'); ?></label></td>
+                        <td>
+                            <input type="checkbox" name="has_post_thumbnail" id="has_post_thumbnail" value="1" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="button button-primary button-large"><?php echo __('Send', 'wp-lorem-ipsum'); ?></button>
+            <input type="hidden" name="action" value="li_post_submit" />
+        </form>
     </div>
     <?php
 }
 
-function li_insert_posts()
+function li_post_submit()
 {
     global $li_posts;
 
-    $args = array(
-        'posts_number' => 5,
-        'has_post_thumbnail' => true
-    );
-    $posts_ids = $li_posts->insert_posts($args);
+    // Check fields
+    if(
+        (
+            isset($_POST['post_number']) && is_numeric($_POST['post_number'])
+            && (
+                    $_POST['post_number'] >= $li_posts->get_count_post_limit('min')
+                    && $_POST['post_number'] <= $li_posts->get_count_post_limit('max')
+                )
+        )
+        && ( isset($_POST['post_type']) && !empty($_POST['post_type']) && is_string($_POST['post_type']) )
+        && ( isset($_POST['post_status']) && !empty($_POST['post_status']) && is_string($_POST['post_status']) )
+        && ( isset($_POST['post_author']) && is_numeric($_POST['post_author']) )
+    ) {
+        // Post Thumbnail
+        $has_post_thumbnail = ( isset($_POST['has_post_thumbnail']) && is_numeric($_POST['has_post_thumbnail']) && $_POST['has_post_thumbnail'] == 1 ) ? true : false ;
 
-    print_r($posts_ids);
+        // Insert posts
+        $args = array(
+            'post_number' => (int)$_POST['post_number'],
+            'post_type' => sanitize_text_field($_POST['post_type']),
+            'post_status' => sanitize_text_field($_POST['post_status']),
+            'post_author' => (int)$_POST['post_author'],
+            'has_post_thumbnail' => $has_post_thumbnail
+        );
+        $li_posts->insert_posts($args);
 
-    ob_flush();
-    exit;
+        // Redirect to selected post_type archive
+        exit( wp_redirect( admin_url('edit.php?post_type='.$_POST['post_type']) ) );
+    } else {
+        // Error during insert
+        wp_die( __('Error.', 'wp-lorem-ipsum') );
+    }
 }
-add_action( 'wp_ajax_li_insert_posts', 'li_insert_posts' );
-add_action( 'wp_ajax_nopriv_li_insert_posts', 'li_insert_posts' );
+add_action('admin_post_li_post_submit', 'li_post_submit');
+add_action('admin_post_nopriv_li_post_submit', 'li_post_submit');
