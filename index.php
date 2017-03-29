@@ -83,9 +83,9 @@ function li_admin_page()
             <table width="100%" cellspacing="0" cellpadding="0">
                 <tbody>
                     <tr>
-                        <td><label for="post_number"><?php echo __('Number of posts', 'wp-lorem-ipsum'); ?></label></td>
+                        <td><label for="post-number"><?php echo __('Number of posts', 'wp-lorem-ipsum'); ?></label></td>
                         <td>
-                            <select name="post_number" id="post_number" required="required">
+                            <select name="post_number" id="post-number" required="required">
                                 <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
                                 <?php
                                 while( $num_start <= $num_end ) {
@@ -99,9 +99,9 @@ function li_admin_page()
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="post_type"><?php echo __('Post type', 'wp-lorem-ipsum'); ?></label></td>
+                        <td><label for="post-type"><?php echo __('Post type', 'wp-lorem-ipsum'); ?></label></td>
                         <td>
-                            <select name="post_type" id="post_type" required="required">
+                            <select name="post_type" id="post-type" required="required">
                                 <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
                                 <?php
                                 if( count($post_types) ) {
@@ -116,9 +116,9 @@ function li_admin_page()
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="post_status"><?php echo __('Post status', 'wp-lorem-ipsum'); ?></label></td>
+                        <td><label for="post-status"><?php echo __('Post status', 'wp-lorem-ipsum'); ?></label></td>
                         <td>
-                            <select name="post_status" id="post_status" required="required">
+                            <select name="post_status" id="post-status" required="required">
                                 <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
                                 <?php
                                 if( count($post_statuses) ) {
@@ -133,9 +133,9 @@ function li_admin_page()
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="post_author"><?php echo __('Post author', 'wp-lorem-ipsum'); ?></label></td>
+                        <td><label for="post-author"><?php echo __('Post author', 'wp-lorem-ipsum'); ?></label></td>
                         <td>
-                            <select name="post_author" id="post_author" required="required">
+                            <select name="post_author" id="post-author" required="required">
                                 <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
                                 <?php
                                 if( count($post_authors) ) {
@@ -150,9 +150,9 @@ function li_admin_page()
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="has_post_thumbnail"><?php echo __('Post thumbnail', 'wp-lorem-ipsum'); ?></label></td>
+                        <td><label for="has-post-thumbnail"><?php echo __('Post thumbnail', 'wp-lorem-ipsum'); ?></label></td>
                         <td>
-                            <input type="checkbox" name="has_post_thumbnail" id="has_post_thumbnail" value="1" />
+                            <input type="checkbox" name="has_post_thumbnail" id="has-post-thumbnail" value="1" />
                         </td>
                     </tr>
                 </tbody>

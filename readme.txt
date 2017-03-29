@@ -2,7 +2,7 @@
 
 Contributors: matteomanna, kraein
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=matteomanna87%40gmail%2ecom
-Tags: post, lorem ipsum, page, post type, database
+Tags: post, lorem ipsum, page, post type, database, post thumbnail
 Requires at least: 4.0
 Tested up to: 4.7
 Stable tag: 1.0
@@ -30,25 +30,32 @@ Now users can automatically create new fake posts to fill the database. It's pos
 
 == Frequently Asked Questions ==
 
-= Can I change my Avatar uploading an image from my PC/Mac? =
+= Can I choose the post type? =
 
-Yes, you can upload your image in WordPress Media Library and after that will be available in your profile page.
+Yes, you can choose number of posts, post type, post author, post status and if the posts will have post thumbnail.
 
-= Are there any other settings I need to configure? =
+= Can I upload fake thumbnails? =
 
-No, it's really simple. Add/Remove buttons, stop.
+When you click "Send" your posts will have random post thumbnails. After that you can edit single posts and upload your thumbnails from your media library.
 
 
 
 == Screenshots ==
 
-1. Sample view of the new option in the user page.
-2. A view of the Media Library that you can use for change user Avatar.
-3. A view of the user's page list with new Avatar.
+1. Sample view of the plugin page.
+2. A view of the posts archive with the new fake posts.
+3. A single view of new fake post with title, content, excerpt and post thumbnail.
 
 
 
 == Changelog ==
 
 = 1.0 =
-* Release Date - 28 March 2017
+* Release Date - 29 March 2017
+
+
+
+== Upgrade Notice ==
+
+= 1.0 =
+* Release Date - 29 March 2017
