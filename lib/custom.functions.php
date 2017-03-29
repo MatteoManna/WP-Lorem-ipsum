@@ -37,7 +37,7 @@ function li_get_post_types()
     // Get WordPress post types
     $args = array(
         'public' => true,
-        '_builtin' => false
+        //'_builtin' => true
     );
     $post_types = get_post_types($args, 'names', 'and');
 
