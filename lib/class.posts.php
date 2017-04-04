@@ -67,7 +67,7 @@ if ( !class_exists('LiPosts') ) {
 
         /**
          * @param array $args:
-         *      - @post_number: 5 <=> 30. Default 5
+         *      - @post_count: 5 <=> 30. Default 5
          *      - @post_type: Default post
          *      - @post_status: publish, future, draft, pending, private, trash, auto-draft, inherit. Default publish
          *      - @post_author: Default current user ID
@@ -100,7 +100,7 @@ if ( !class_exists('LiPosts') ) {
 
             // All new posts IDs, init array
             $posts_ids = array();
-            
+
             for ( $i = 1; $i <= (int)$post_count; $i++ ) {
                 // Insert Post
                 $post = array(
