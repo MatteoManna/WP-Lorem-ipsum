@@ -77,14 +77,14 @@ if ( !class_exists('LiPosts') ) {
         public function insert_posts( $args = array() )
         {
             // Posts number: find "min" and "max" from dedicated function. Default "min"
-            $posts_number = (
-                isset($args['posts_number'])
-                && is_numeric($args['posts_number'])
+            $post_count = (
+                isset($args['post_count'])
+                && is_numeric($args['post_count'])
                 && (
-                    $args['posts_number'] >= $this->get_count_post_limit('min')
-                    && $args['posts_number'] <= $this->get_count_post_limit('max')
+                    $args['post_count'] >= $this->get_count_post_limit('min')
+                    && $args['post_count'] <= $this->get_count_post_limit('max')
                 )
-            ) ? (int)$args['posts_number'] : $this->get_count_post_limit('min') ;
+            ) ? (int)$args['post_count'] : $this->get_count_post_limit('min') ;
 
             // Post type, default post
             $post_type = ( isset($args['post_type']) && !empty($args['post_type']) ) ? sanitize_text_field($args['post_type']) : 'post' ;
@@ -100,8 +100,8 @@ if ( !class_exists('LiPosts') ) {
 
             // All new posts IDs, init array
             $posts_ids = array();
-
-            for ( $i = 1; $i <= (int)$posts_number; $i++ ) {
+            
+            for ( $i = 1; $i <= (int)$post_count; $i++ ) {
                 // Insert Post
                 $post = array(
                     'post_type' => $post_type,

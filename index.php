@@ -83,9 +83,9 @@ function li_admin_page()
             <table width="100%" cellspacing="0" cellpadding="0">
                 <tbody>
                     <tr>
-                        <td><label for="post-number"><?php echo __('Number of posts', 'wp-lorem-ipsum'); ?></label></td>
+                        <td><label for="post-count"><?php echo __('Number of posts', 'wp-lorem-ipsum'); ?></label></td>
                         <td>
-                            <select name="post_number" id="post-number" required="required">
+                            <select name="post_count" id="post-count" required="required">
                                 <option value=""><?php echo __('Select', 'wp-lorem-ipsum'); ?>...</option>
                                 <?php
                                 while( $num_start <= $num_end ) {
@@ -171,10 +171,10 @@ function li_post_submit()
     // Check fields
     if(
         (
-            isset($_POST['post_number']) && is_numeric($_POST['post_number'])
+            isset($_POST['post_count']) && is_numeric($_POST['post_count'])
             && (
-                    $_POST['post_number'] >= $li_posts->get_count_post_limit('min')
-                    && $_POST['post_number'] <= $li_posts->get_count_post_limit('max')
+                    $_POST['post_count'] >= $li_posts->get_count_post_limit('min')
+                    && $_POST['post_count'] <= $li_posts->get_count_post_limit('max')
                 )
         )
         && ( isset($_POST['post_type']) && !empty($_POST['post_type']) && is_string($_POST['post_type']) )
@@ -186,7 +186,7 @@ function li_post_submit()
 
         // Insert posts
         $args = array(
-            'post_number' => (int)$_POST['post_number'],
+            'post_count' => (int)$_POST['post_count'],
             'post_type' => sanitize_text_field($_POST['post_type']),
             'post_status' => sanitize_text_field($_POST['post_status']),
             'post_author' => (int)$_POST['post_author'],
