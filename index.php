@@ -79,7 +79,6 @@ function li_admin_page()
     $post_types = li_get_post_types();
     $post_statuses = li_get_post_statuses();
     $post_authors = li_get_authors();
-    $nonce = wp_create_nonce( get_nonce_string() );
     ?>
     <div class="wrap">
         <h2><?php echo __('WP Lorem ipsum', 'wp-lorem-ipsum'); ?></h2>
