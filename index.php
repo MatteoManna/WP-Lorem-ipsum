@@ -66,6 +66,10 @@ function li_admin_menu()
 }
 add_action( 'admin_menu', 'li_admin_menu' );
 
+function get_nonce_string() {
+    return 'matteomanna-wp-lorem-ipsum';
+}
+
 function li_admin_page()
 {
     global $li_posts;
@@ -75,6 +79,7 @@ function li_admin_page()
     $post_types = li_get_post_types();
     $post_statuses = li_get_post_statuses();
     $post_authors = li_get_authors();
+    $nonce = wp_create_nonce( get_nonce_string() );
     ?>
     <div class="wrap">
         <h2><?php echo __('WP Lorem ipsum', 'wp-lorem-ipsum'); ?></h2>
@@ -159,6 +164,7 @@ function li_admin_page()
             </table>
             <button type="submit" class="button button-primary button-large"><?php echo __('Send', 'wp-lorem-ipsum'); ?></button>
             <input type="hidden" name="action" value="li_post_submit" />
+            <?php wp_nonce_field( get_nonce_string(), '_wpnonce' );?>
         </form>
     </div>
     <?php
@@ -168,38 +174,47 @@ function li_post_submit()
 {
     global $li_posts;
 
-    // Check fields
-    if(
-        (
-            isset($_POST['post_count']) && is_numeric($_POST['post_count'])
-            && (
-                    $_POST['post_count'] >= $li_posts->get_count_post_limit('min')
-                    && $_POST['post_count'] <= $li_posts->get_count_post_limit('max')
-                )
-        )
-        && ( isset($_POST['post_type']) && !empty($_POST['post_type']) && is_string($_POST['post_type']) )
-        && ( isset($_POST['post_status']) && !empty($_POST['post_status']) && is_string($_POST['post_status']) )
-        && ( isset($_POST['post_author']) && is_numeric($_POST['post_author']) )
+    if( !current_user_can('manage_options') ) wp_die( __('Error.', 'wp-lorem-ipsum') );
+    if (
+            isset( $_POST['_wpnonce'] )
+            && wp_verify_nonce( $_POST['_wpnonce'], get_nonce_string() )
     ) {
-        // Post Thumbnail
-        $has_post_thumbnail = ( isset($_POST['has_post_thumbnail']) && is_numeric($_POST['has_post_thumbnail']) && $_POST['has_post_thumbnail'] == 1 ) ? true : false ;
+        // Check fields
+        if(
+            (
+                isset($_POST['post_count']) && is_numeric($_POST['post_count'])
+                && (
+                        $_POST['post_count'] >= $li_posts->get_count_post_limit('min')
+                        && $_POST['post_count'] <= $li_posts->get_count_post_limit('max')
+                    )
+            )
+            && ( isset($_POST['post_type']) && !empty($_POST['post_type']) && is_string($_POST['post_type']) )
+            && ( isset($_POST['post_status']) && !empty($_POST['post_status']) && is_string($_POST['post_status']) )
+            && ( isset($_POST['post_author']) && is_numeric($_POST['post_author']) )
+        ) {
+            // Post Thumbnail
+            $has_post_thumbnail = ( isset($_POST['has_post_thumbnail']) && is_numeric($_POST['has_post_thumbnail']) && $_POST['has_post_thumbnail'] == 1 ) ? true : false ;
 
-        // Insert posts
-        $args = array(
-            'post_count' => (int)$_POST['post_count'],
-            'post_type' => sanitize_text_field($_POST['post_type']),
-            'post_status' => sanitize_text_field($_POST['post_status']),
-            'post_author' => (int)$_POST['post_author'],
-            'has_post_thumbnail' => $has_post_thumbnail
-        );
-        $li_posts->insert_posts($args);
+            // Insert posts
+            $args = array(
+                'post_count' => (int)$_POST['post_count'],
+                'post_type' => sanitize_text_field($_POST['post_type']),
+                'post_status' => sanitize_text_field($_POST['post_status']),
+                'post_author' => (int)$_POST['post_author'],
+                'has_post_thumbnail' => $has_post_thumbnail
+            );
+            $li_posts->insert_posts($args);
 
-        // Redirect to selected post_type archive
-        exit( wp_redirect( admin_url('edit.php?post_type='.$_POST['post_type']) ) );
+            // Redirect to selected post_type archive
+            exit( wp_redirect( admin_url('edit.php?post_type='.$_POST['post_type']) ) );
+        } else {
+            // Error during insert
+            wp_die( __('Error.', 'wp-lorem-ipsum') );
+        }
     } else {
         // Error during insert
         wp_die( __('Error.', 'wp-lorem-ipsum') );
     }
 }
 add_action('admin_post_li_post_submit', 'li_post_submit');
-add_action('admin_post_nopriv_li_post_submit', 'li_post_submit');
+//add_action('admin_post_nopriv_li_post_submit', 'li_post_submit');
