@@ -44,7 +44,7 @@ function li_admin_menu() {
 }
 add_action( 'admin_menu', 'li_admin_menu' );
 
-function get_nonce_string() {
+function li_get_nonce_string() {
     return 'matteomanna-wp-lorem-ipsum';
 }
 
@@ -148,7 +148,7 @@ function li_admin_page() {
             </table>
             <button type="submit" class="button button-primary button-large"><?php  _e('Send', 'wp-lorem-ipsum'); ?></button>
             <input type="hidden" name="action" value="li_post_submit" />
-            <?php wp_nonce_field( get_nonce_string(), '_wpnonce' );?>
+            <?php wp_nonce_field( li_get_nonce_string(), '_wpnonce' );?>
         </form>
     </div>
     <?php
@@ -219,7 +219,7 @@ function li_post_submit() {
 
     if (
         isset( $_POST['_wpnonce'] )
-        && wp_verify_nonce( $_POST['_wpnonce'], get_nonce_string() )
+        && wp_verify_nonce( $_POST['_wpnonce'], li_get_nonce_string() )
     ) :
         $redirect_ok = admin_url( 'options-general.php' );
         $redirect_ok = add_query_arg( 'page', 'wp-lorem-ipsum', $redirect_ok );
@@ -228,7 +228,6 @@ function li_post_submit() {
 
         for( $i=1; $i<=$_POST['post_count']; $i++ ) :
             $post_content = li_get_content( $_POST['paras'] );
-            //$post_content = 'test';
             $post_title = substr( sanitize_text_field($post_content), 0, rand( 25, 35 ) );
             $rand_start = rand( 50, 100 );
             $post_excerpt = ucfirst( substr( sanitize_text_field($post_content), $rand_start, 100 ) ) . '.';
