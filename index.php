@@ -3,7 +3,7 @@
 Plugin Name: WP Lorem ipsum
 Description: Automatically create new fake posts to fill the database and get a very good impression for your website.
 Author: Matteo Manna
-Version: 2.4
+Version: 2.5
 Author URI: http://matteomanna.com/
 Text Domain: wp-lorem-ipsum
 License: GPL2
@@ -148,7 +148,7 @@ function li_admin_page() {
             </table>
             <button type="submit" class="button button-primary button-large"><?php  _e('Send', 'wp-lorem-ipsum'); ?></button>
             <input type="hidden" name="action" value="li_post_submit" />
-            <?php wp_nonce_field( li_get_nonce_string(), '_wpnonce' );?>
+            <?php wp_nonce_field( li_get_nonce_string(), '_wpnonce' ); ?>
         </form>
     </div>
     <?php
