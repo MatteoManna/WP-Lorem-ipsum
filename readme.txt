@@ -51,7 +51,7 @@ When you click "Send" your posts will have random post thumbnails. After that yo
 == Changelog ==
 
 = 2.6 =
-* Release Date - 4rd November 2020
+* Release Date - 4 November 2020
 
 = 2.5 =
 * Release Date - 23 October 2020
