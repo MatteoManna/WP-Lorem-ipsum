@@ -4,8 +4,8 @@ Contributors: matteomanna, kraein
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=matteomanna87%40gmail%2ecom
 Tags: post, lorem ipsum, page, post type, database, post thumbnail
 Requires at least: 4.0
-Tested up to: 5.5
-Stable tag: 2.7
+Tested up to: 5.6
+Stable tag: 2.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,9 @@ When you click "Send" your posts will have random post thumbnails. After that yo
 
 
 == Changelog ==
+
+= 2.8 =
+* Release Date - 9 December 2020
 
 = 2.7 =
 * Release Date - 4 November 2020
