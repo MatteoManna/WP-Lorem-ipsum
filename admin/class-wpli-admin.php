@@ -22,7 +22,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
         }
 
 
-        public static function init() {
+        public function init() {
 
             new self;
 
@@ -34,7 +34,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
          *
          * @since   1.0
          */
-        public static function custom_admin_enqueue_scripts() {
+        public function custom_admin_enqueue_scripts() {
 
             // CSS Style
             wp_enqueue_style( 'wpli', plugins_url( 'css/style.css', __FILE__ ), [], WPLI_PLUGIN_VERSION, 'all' );
@@ -48,7 +48,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
          *
          * @since   1.0
          */
-        public static function custom_admin_menu() {
+        public function custom_admin_menu() {
 
             add_options_page(
                 __('WP Lorem ipsum settings', 'wp-lorem-ipsum'),
@@ -66,7 +66,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
          *
          * @since   1.0
          */
-        public static function render_admin_page() {
+        public function render_admin_page() {
 
             $post_types = get_post_types( [ 'public' => true ], 'names', 'and' );
             unset( $post_types['attachment'] );
@@ -166,7 +166,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
          *
          * @since   1.0
          */
-        public static function post_submit_save() {
+        public function post_submit_save() {
 
             if( ! current_user_can('manage_options') )
                 wp_die( __('Error.', 'wp-lorem-ipsum') );
@@ -237,7 +237,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
          *
          * @since   1.0
          */
-        private static function get_authors() {
+        private function get_authors() {
 
             global $wpdb;
 
@@ -261,7 +261,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
          *
          * @since   1.0
          */
-        private static function get_content( $paras = 0 ) {
+        private function get_content( $paras = 0 ) {
 
             $paras = ( isset($paras) && is_numeric($paras) && $paras > 0 ) ? (int)$paras : rand( 5, 10 );
             $url = esc_url( "https://loripsum.net/api/{$paras}/medium/headers/decorate" );
@@ -278,7 +278,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
          *
          * @since   1.0
          */
-        private static function get_attachment_id_from_src( $image_src = '' ) {
+        private function get_attachment_id_from_src( $image_src = '' ) {
 
             global $wpdb;
 
