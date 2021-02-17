@@ -22,7 +22,7 @@ if ( ! class_exists( 'WPLoremIpsum_Admin' ) ) :
         }
 
 
-        public function init() {
+        public static function init() {
 
             new self;
 
