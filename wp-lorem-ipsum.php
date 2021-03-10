@@ -5,7 +5,7 @@
  * Plugin Name: WP Lorem Ipsum
  * Plugin URI: https://wordpress.org/plugins/wp-lorem-ipsum/
  * Description: Automatically create <strong>new fake posts</strong> to fill the database and get a very good impression for your website.
- * Version: 3.0
+ * Version: 3.1
  * Author: Matteo Manna
  * Author URI: https://matteomanna.com/
  * License: GPL-2.0+
@@ -23,7 +23,7 @@ if ( !defined( 'ABSPATH' ) )
  * @since   2.9
  */
 if ( ! defined( 'WPLI_PLUGIN_VERSION' ) )
-    define( 'WPLI_PLUGIN_VERSION', 3.0 );
+    define( 'WPLI_PLUGIN_VERSION', 3.1 );
 
 // Admin Class
 if ( is_admin() )
